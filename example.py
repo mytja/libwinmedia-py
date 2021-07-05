@@ -1,33 +1,30 @@
+import os
+os.environ["PATH"] = os.path.dirname(__file__) + os.pathsep + os.environ["PATH"]
 import libwinmedia
 import time
 
-print("Initilizing LibWinMedia")
-lwm = libwinmedia.LibWinMedia()
+player = libwinmedia.Player()
 
-file = libwinmedia.MediaFile(r"\\VBOXSVR\libwinmedia-py\libwinmedia\Kalimba.mp3")
-lwm.open(file)
+media = libwinmedia.Media("https://www.kozco.com/tech/organfinale.mp3")
+
+player.open(media)
 
 print("Now playing")
-lwm.player.play()
-
-rate = lwm.player.getRate()
-print("Rate: " + str(rate))
-
-balance = lwm.player.getAudioBalance()
-print("Audio balance: " + str(balance))
-
-volume = lwm.player.getVolume()
-print("Volume: " + str(volume))
-
+player.play()
 time.sleep(5)
 
-lwm.player.setVolume(80.0)
-volume = lwm.player.getVolume()
-print("Volume: " + str(volume))
+print("Rate: " + str(player.rate))
+print("Audio balance: " + str(player.audio_balance))
+print("Volume: " + str(player.volume))
 
-#print("Media duration: " + str(lwm.media.getDuration()))
+time.sleep(3)
 
-time.sleep(10)
+player.volume = 80
+print("Volume: " + str(player.volume))
+
+# print("Media duration: " + str(media.duration))
+
+time.sleep(3)
 
 print("Now pausing")
-lwm.player.pause()
+player.pause()
