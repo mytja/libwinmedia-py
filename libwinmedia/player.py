@@ -1,79 +1,67 @@
-import os
+from .media import Media
+from .library import lib
 
-from .media import MediaFile
 
-from ctypes import c_bool, c_int32, c_float
+class Player(object):
+    def __init__(self):
+        self.id = lib.Player_create()
 
-class Player:
-    isLoopingEnabled = False
-    isAutoplayEnabled = False
+    def open(self, media: Media) -> None:
+        lib.Player_open(self.id, media.id)
 
-    """
-    General commands
-    """
-    def __init__(self, playerInstance, lib) -> None:
-        self.player = playerInstance
-        self.lib = lib
-    
     def play(self) -> None:
-        self.lib.Player_play(self.player)
-
-        # Set some integers and booleans that can only be changed within this class and don't update manually
-        self.isLoopingEnabled = self.isLooping()
-        self.isAutoplayEnabled = self.isAutoplay()
-        self.volume = self.getVolume()
-        self.rate = self.getRate()
-        self.audioBalance = self.getAudioBalance()
+        lib.Player_play(self.id)
 
     def pause(self) -> None:
-        self.lib.Player_pause(self.player)
-    
-    def close(self) -> None:
-        self.lib.Player_dispose(self.player)
-    
-    """
-    Commands with return value (eg. commands with returning current status of something)
-    """
-    def isLooping(self) -> bool:
-        self.isLoopingEnabled = self.lib.Player_isLooping(self.player)
-        return self.isLooping
-    
-    def isAutoplay(self) -> bool:
-        self.isAutoplayEnabled = self.lib.Player_isAutoplay(self.player)
-        return self.isAutoplay
-    
-    def getAudioBalance(self) -> float:
-        return self.lib.Player_getAudioBalance(self.player)
-    
-    def getRate(self) -> float:
-        return self.lib.Player_getRate(self.player)
-    
-    def getVolume(self) -> float:
-        return self.lib.Player_getVolume(self.player)
+        lib.Player_pause(self.id)
 
-    """
-    Commands that set Player preferences
-    """
-    def setPosition(self, position: int) -> None:
-        self.lib.Player_setPosition(self.player, position)
-    
-    def setVolume(self, volume: float) -> None:
-        self.lib.Player_setVolume.argtypes = [c_int32, c_float]
-        self.lib.Player_setVolume(self.player, volume)
-        self.volume = volume
-    
-    def setRate(self, rate: float) -> None:
-        self.lib.Player_setRate(self.player, rate)
-        self.rate = rate
-    
-    def setAudioBalance(self, balance: float) -> None:
-        self.lib.Player_setAudioBalance(self.player, balance)
-        self.audioBalance = balance
-    
-    def setAutoplay(self, autoplay: bool) -> None:
-        self.lib.Player_setAutoplay(self.player, autoplay)
-        self.isAutoplayEnabled = autoplay
+    def dispose(self) -> None:
+        lib.Player_dispose(self.id)
 
-    def setLooping(self, looping: bool) -> None:
-        self.lib.Player_setIsLooping(self.player, looping)
-        self.isLoopingEnabled = looping
+    @property
+    def looping(self) -> bool:
+        return lib.Player_isLooping(self.id)
+
+    @looping.setter
+    def looping(self, value: bool) -> None:
+        lib.Player_setIsLooping(self.id, value)
+
+    @property
+    def autoplay(self) -> bool:
+        return lib.Player_isAutoplay(self.id)
+
+    @autoplay.setter
+    def autoplay(self, value: bool) -> None:
+        lib.Player_setAutoplay(self.id, value)
+
+    @property
+    def audio_balance(self) -> float:
+        return lib.Player_getAudioBalance(self.id)
+
+    @audio_balance.setter
+    def audio_balance(self, value: float) -> None:
+        lib.Player_setAudioBalance(self.id, value)
+
+    @property
+    def rate(self) -> float:
+        return lib.Player_getRate(self.id)
+
+    @rate.setter
+    def rate(self, value: float) -> None:
+        lib.Player_setRate(self.id, value)
+
+    @property
+    def volume(self) -> float:
+        return lib.Player_getVolume(self.id)
+
+    @volume.setter
+    def volume(self, value: float) -> None:
+        lib.Player_setVolume(self.id, value)
+
+    @property
+    def position(self) -> int:
+        return lib.Player_getPosition(self.id)
+
+    @position.setter
+    def position(self, value: int) -> None:
+        lib.Player_setPosition(self.id, value)
