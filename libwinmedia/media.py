@@ -1,6 +1,5 @@
 from .library import lib
 
-
 class Media(object):
     def __init__(self, uri: str, parse: bool = False):
         self.uri = uri

@@ -1,6 +1,7 @@
 from .media import Media
 from .library import lib
 
+from ctypes import c_int32, c_float
 
 class Player(object):
     def __init__(self):
@@ -40,6 +41,7 @@ class Player(object):
 
     @audio_balance.setter
     def audio_balance(self, value: float) -> None:
+        lib.Player_setVolume.argtypes = [c_int32, c_float]
         lib.Player_setAudioBalance(self.id, value)
 
     @property
@@ -48,6 +50,7 @@ class Player(object):
 
     @rate.setter
     def rate(self, value: float) -> None:
+        lib.Player_setVolume.argtypes = [c_int32, c_float]
         lib.Player_setRate(self.id, value)
 
     @property
@@ -56,6 +59,7 @@ class Player(object):
 
     @volume.setter
     def volume(self, value: float) -> None:
+        lib.Player_setVolume.argtypes = [c_int32, c_float]
         lib.Player_setVolume(self.id, value)
 
     @property
