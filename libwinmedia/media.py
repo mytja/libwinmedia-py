@@ -1,13 +1,14 @@
 from .library import lib
 
 class Media(object):
-    def __init__(self, uri: str, parse: bool = False):
+    def __init__(self, id: int, uri: str, parse: bool = False):
         self.uri = uri
-        self.id = lib.Media_create(uri, parse)
+        self.id = id
+        lib.MediaCreate(id, uri, parse)
 
     def dispose(self) -> None:
-        lib.Media_dispose(self.id)
+        lib.MediaDispose(self.id)
 
     @property
     def duration(self) -> int:
-        return lib.Media_getDuration(self.id)
+        return lib.MediaGetDuration(self.id)
