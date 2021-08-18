@@ -20,10 +20,27 @@ def callbackVolume(volume: int):
 def callbackRate(rate: int):
     print("Rate callback: " + str(rate))
 
+@CFUNCTYPE(None, c_int32)
+def buttonNativeCallback(button: int):
+    print("Native button callback: " + str(button))
+    if button == 0:
+        print("Play")
+        player.play()
+    if button == 1:
+        print("Pause")
+        player.pause()
+    if button == 6:
+        print("Next")
+    if button == 7:
+        print("Previous")
+
 
 player.open(media)
 player.setVolumeEventHandler(callbackVolume)
 player.setRateEventHandler(callbackRate)
+
+nativecontrols = libwinmedia.NativeControls()
+nativecontrols.create(buttonNativeCallback)
 
 print("Now playing")
 player.play()
