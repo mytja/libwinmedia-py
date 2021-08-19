@@ -41,6 +41,7 @@ player.setRateEventHandler(callbackRate)
 
 nativecontrols = libwinmedia.NativeControls()
 nativecontrols.create(buttonNativeCallback)
+nativecontrols.update(player)
 
 print("Now playing")
 player.play()

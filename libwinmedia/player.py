@@ -5,6 +5,8 @@ from ctypes import c_int32, c_float, c_void_p, CFUNCTYPE
 
 
 class Player(object):
+    media = None
+
     def __init__(self, id: int, showVideo: bool = False):
         """
         Here you create a player instance.
@@ -31,6 +33,8 @@ class Player(object):
         This function returns:
             None
         """
+
+        self.media = media
 
         lib.PlayerOpen(self.id, media.id)
         if autostart:

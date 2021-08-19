@@ -132,3 +132,7 @@ dmypy.json
 *.ogg
 *.wav
 *.mp3
+
+# Image files
+*.png
+*.jpg
