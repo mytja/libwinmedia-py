@@ -18,9 +18,9 @@ class Media(object):
         return lib.MediaGetDuration(self.id)
 
     def getMetadata(self) -> str:
-        #Tags = lib.TagsFromMusic
-        #Tags.args = [POINTER(c_wchar)]
-        #Tags.restype = POINTER(POINTER(c_wchar * 13))
+        lib.TagsFromMusic.args = [POINTER(c_wchar)]
+        lib.TagsFromMusic.restype = POINTER(POINTER(c_wchar))
+
         return lib.TagsFromMusic(self.uri)
 
     def extractThumbnail(self, outputFolder: str, outputFile: str) -> None:

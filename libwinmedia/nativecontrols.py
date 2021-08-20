@@ -1,6 +1,6 @@
 import ctypes
 import os
-from ctypes import CFUNCTYPE, c_int32
+from ctypes import CFUNCTYPE, c_int32, POINTER, c_wchar
 
 from . import Player
 from .library import lib
@@ -39,9 +39,17 @@ class NativeControls:
         file = "thumbnail.png"
         thumb = os.path.join(folder, file)
         player.media.extractThumbnail(folder, file)
+
+        lib.PlayerNativeControlsUpdate.argtypes = [
+            c_int32,
+            c_int32,
+            POINTER(POINTER(c_wchar)),
+            POINTER(c_wchar)
+        ]
+
         lib.PlayerNativeControlsUpdate(
             player.id,
-            2,
+            0,
             player.media.getMetadata(),
             thumb
         )

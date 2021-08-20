@@ -3,7 +3,6 @@ from .library import lib
 
 from ctypes import c_int32, c_float, c_void_p, CFUNCTYPE
 
-
 class Player(object):
     media = None
 
@@ -106,30 +105,33 @@ class Player(object):
 
     @property
     def audio_balance(self) -> float:
-        return lib.PlayerGetAudioBalance(self.id)
+        lib.PlayerGetAudioBalance.restype = c_float
+        return lib.PlayerGetAudioBalance(self.id) * 100
 
     @audio_balance.setter
     def audio_balance(self, value: float) -> None:
         lib.PlayerSetVolume.argtypes = [c_int32, c_float]
-        lib.PlayerSetAudioBalance(self.id, value)
+        lib.PlayerSetAudioBalance(self.id, value / 100)
 
     @property
     def rate(self) -> float:
-        return lib.PlayerGetRate(self.id)
+        lib.PlayerGetRate.restype = c_float
+        return lib.PlayerGetRate(self.id) * 100
 
     @rate.setter
     def rate(self, value: float) -> None:
-        lib.PlayerSetVolume.argtypes = [c_int32, c_float]
-        lib.PlayerSetRate(self.id, value)
+        lib.PlayerSetRate.argtypes = [c_int32, c_float]
+        lib.PlayerSetRate(self.id, value / 100)
 
     @property
     def volume(self) -> float:
-        return lib.PlayerGetVolume(self.id)
+        lib.PlayerGetVolume.restype = c_float
+        return lib.PlayerGetVolume(self.id) * 100
 
     @volume.setter
-    def volume(self, value: float) -> None:
+    def volume(self, value: int) -> None:
         lib.PlayerSetVolume.argtypes = [c_int32, c_float]
-        lib.PlayerSetVolume(self.id, value)
+        lib.PlayerSetVolume(self.id, value / 100)
 
     @property
     def position(self) -> int:
@@ -147,4 +149,15 @@ class Player(object):
         lib.PlayerSetVolumeEventHandler(self.id, callback)
 
     def setRateEventHandler(self, callback) -> None:
-        lib.PlayerSetVolumeEventHandler(self.id, callback)
+        lib.PlayerSetRateEventHandler(self.id, callback)
+
+    def setIsDoneEventHandler(self, callback) -> None:
+        lib.PlayerSetIsCompletedEventHandler(self.id, callback)
+
+    def setPositionEventHandler(self, callback) -> None:
+        lib.PlayerSetPositionEventHandler(self.id, callback)
+
+    def setDurationEventHandler(self, callback) -> None:
+        lib.PlayerSetDurationEventHandler(self.id, callback)
+
+
