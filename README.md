@@ -1,6 +1,12 @@
 # libwinmedia-py
 A Python port of libwinmedia, a tiny high-level media playback library for C++.
 
+# Installation
+You can install latest version from Git using this command:
+```shell
+pip install git+https://github.com/libwinmedia/libwinmedia-py
+```
+
 # Requirements & dependencies
 This library DOES NOT depend on any Python library, that isn't included in standard library...
 
