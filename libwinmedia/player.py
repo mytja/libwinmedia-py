@@ -110,15 +110,20 @@ class Player(object):
     def seek(self, value: int) -> None:
         self.position = value
 
-    # Not working.
+    def set_playing_callback(self, callback) -> None:
+        lib.PlayerSetIsPlayingEventHandler(self.id, callback)
+    
+    def set_completed_callback(self, callback) -> None:
+        lib.PlayerSetIsCompletedEventHandler(self.id, callback)
+
+    def set_buffering_callback(self, callback) -> None:
+        lib.PlayerSetIsBufferingEventHandler(self.id, callback)
+
     def set_volume_callback(self, callback) -> None:
         lib.PlayerSetVolumeEventHandler(self.id, callback)
 
     def set_rate_callback(self, callback) -> None:
         lib.PlayerSetRateEventHandler(self.id, callback)
-
-    def set_completed_callback(self, callback) -> None:
-        lib.PlayerSetIsCompletedEventHandler(self.id, callback)
 
     def set_position_callback(self, callback) -> None:
         lib.PlayerSetPositionEventHandler(self.id, callback)
