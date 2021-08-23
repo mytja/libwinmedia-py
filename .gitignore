@@ -136,3 +136,7 @@ dmypy.json
 # Image files
 *.png
 *.jpg
+
+# Debug
+test.py
+libwinmedia.dll
