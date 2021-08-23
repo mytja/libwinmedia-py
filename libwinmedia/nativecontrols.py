@@ -1,6 +1,5 @@
-import ctypes
 import os
-from ctypes import CFUNCTYPE, c_int32, POINTER, c_wchar
+from ctypes import c_int32, POINTER, c_wchar
 
 from . import Player
 from .library import lib
@@ -31,7 +30,7 @@ class NativeControls:
     def create(self, callback):
         lib.NativeControlsCreate(callback)
 
-    def setStatus(self, player: Player, status: int):
+    def set_status(self, player: Player, status: int):
         lib.PlayerNativeControlsSetStatus(player.id, status)
 
     def update(self, player: Player):
@@ -44,15 +43,10 @@ class NativeControls:
             c_int32,
             c_int32,
             POINTER(POINTER(c_wchar)),
-            POINTER(c_wchar)
+            POINTER(c_wchar),
         ]
 
-        lib.PlayerNativeControlsUpdate(
-            player.id,
-            0,
-            player.media.getMetadata(),
-            thumb
-        )
+        lib.PlayerNativeControlsUpdate(player.id, 0, player.media.getMetadata(), thumb)
 
     def clear(self):
         lib.NativeControlsClear()

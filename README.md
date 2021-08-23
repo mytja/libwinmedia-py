@@ -50,19 +50,19 @@ Example:
 from ctypes import CFUNCTYPE, c_float
 
 @CFUNCTYPE(None, c_float)
-def callbackVolume(volume: float):
+def callback_volume(volume: float):
     print("Volume callback: " + str(volume * 100))
 
-player.setVolumeEventHandler(callbackVolume)
+player.set_volume_callback(callback_volume)
 ```
 ### We got these callbacks, which return type:
 | Callback function setter | Type, returned from function                                       |
 |--------------------------|--------------------------------------------------------------------|
-| setVolumeEventHandler    | float (between 0 and 1, thus you might have to multiply it by 100) |
-| setRateEventHandler      | float (between 0 and 1, thus you might have to multiply it by 100) |
-| setIsDoneEventHandler    | bool                                                               |
-| setPositionEventHandler  | int (in miliseconds)                                               |
-| setDurationEventHandler  | int (in miliseconds)                                               |
+| set_volume_callback      | float (between 0 and 1, thus you might have to multiply it by 100) |
+| set_rate_callback        | float (between 0 and 1, thus you might have to multiply it by 100) |
+| set_completed_callback   | bool                                                               |
+| set_position_callback    | int (in miliseconds)                                               |
+| set_duration_callback    | int (in miliseconds)                                               |
 
 # TODO:
 - Implement NativeControls

@@ -48,7 +48,7 @@ class Player(object):
 
         lib.PlayerDispose(self.id)
 
-    def closeWindow(self) -> None:
+    def close_window(self) -> None:
         """Close the video player window."""
 
         lib.PlayerCloseWindow(self.id)
@@ -111,17 +111,17 @@ class Player(object):
         self.position = value
 
     # Not working.
-    def setVolumeEventHandler(self, callback) -> None:
+    def set_volume_callback(self, callback) -> None:
         lib.PlayerSetVolumeEventHandler(self.id, callback)
 
-    def setRateEventHandler(self, callback) -> None:
+    def set_rate_callback(self, callback) -> None:
         lib.PlayerSetRateEventHandler(self.id, callback)
 
-    def setIsDoneEventHandler(self, callback) -> None:
+    def set_completed_callback(self, callback) -> None:
         lib.PlayerSetIsCompletedEventHandler(self.id, callback)
 
-    def setPositionEventHandler(self, callback) -> None:
+    def set_position_callback(self, callback) -> None:
         lib.PlayerSetPositionEventHandler(self.id, callback)
 
-    def setDurationEventHandler(self, callback) -> None:
+    def set_duration_callback(self, callback) -> None:
         lib.PlayerSetDurationEventHandler(self.id, callback)

@@ -32,14 +32,14 @@ class Media(object):
     def duration(self) -> int:
         return lib.MediaGetDuration(self.id)
 
-    def getMetadata(self) -> str:
+    def get_metadata(self) -> str:
         # TODO: add docstring
         lib.TagsFromMusic.args = [POINTER(c_wchar)]
         lib.TagsFromMusic.restype = POINTER(POINTER(c_wchar))
 
         return lib.TagsFromMusic(self.uri)
 
-    def extractThumbnail(self, outputFolder: str, outputFile: str) -> None:
+    def extract_thumbnail(self, outputFolder: str, outputFile: str) -> None:
         """Extract the thumbnail and save it to a file.
 
         Args:
