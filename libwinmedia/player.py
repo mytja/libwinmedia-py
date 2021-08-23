@@ -3,20 +3,23 @@ from .library import lib
 
 from ctypes import c_int32, c_float
 
+player_id = 0
+
 
 class Player(object):
     """A class for controlling a media player."""
 
-    def __init__(self, id: int, showVideo: bool = False):
+    def __init__(self, showVideo: bool = False):
         """Create a new Player instance.
 
         Args:
-            id (int): A unique ID that is used to distinguish this player from others.
             showVideo (bool, optional): Whether to show the video window. Defaults to False.
         """
 
-        self.id = id
+        global player_id
+        self.id = player_id
         lib.PlayerCreate(self.id, showVideo)
+        player_id += 1
 
     def open(self, media: Media, autostart: bool = True) -> None:
         """Provide a Media instance to the player.

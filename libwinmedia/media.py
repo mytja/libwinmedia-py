@@ -1,25 +1,28 @@
 from .library import lib
 from ctypes import POINTER, c_wchar
 
+media_id = 0
+
 
 class Media(object):
     """A class representing a media file."""
 
-    def __init__(self, id: int, uri: str, parse: bool = False):
+    def __init__(self, uri: str, parse: bool = False):
         """Create a new Media instance.
 
         The URI can be either a local file (e.g. "file://C:/music/track.mp3")
         or an HTTP URL (e.g. "https://www.kozco.com/tech/piano2.wav").
 
         Args:
-            id (int): A unique ID that is used to distinguish this media from others.
             uri (str): A URI of the media.
             parse (bool, optional): Whether to parse the media. Defaults to False.
         """
 
-        self.id = id
+        global media_id
+        self.id = media_id
         self.uri = uri
-        lib.MediaCreate(id, uri, parse)
+        lib.MediaCreate(self.id, uri, parse)
+        media_id += 1
 
     def dispose(self) -> None:
         """Release system resources and kill the media instance."""

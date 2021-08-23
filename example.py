@@ -6,9 +6,9 @@ from ctypes import c_int32, CFUNCTYPE, c_float
 
 os.environ["PATH"] = os.path.dirname(__file__) + os.pathsep + os.environ["PATH"]
 
-player = libwinmedia.Player(1000, False)
+player = libwinmedia.Player()
 
-media = libwinmedia.Media(1000, "https://archive.org/download/Kalimba.mp3_377/Kalimba.mp3")
+media = libwinmedia.Media("https://archive.org/download/Kalimba.mp3_377/Kalimba.mp3")
 
 
 @CFUNCTYPE(None, c_float)

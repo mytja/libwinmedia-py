@@ -14,9 +14,9 @@ You need to download a libwinmedia.dll from the [releases page](https://github.c
 ```py
 import libwinmedia
 
-player = libwinmedia.Player(1)
+player = libwinmedia.Player()
 
-media = libwinmedia.Media(1, "https://archive.org/download/Kalimba.mp3_377/Kalimba.mp3")
+media = libwinmedia.Media("https://archive.org/download/Kalimba.mp3_377/Kalimba.mp3")
 
 player.open(media)
 ```
