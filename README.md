@@ -13,7 +13,7 @@ You need to download a libwinmedia.dll from the [releases page](https://github.c
 Another way to deal with it is to ship libwinmedia.dll with your script and put the directory where your script is located in %PATH% before importing the library:
 ```py
 import os
-os.environ["PATH"] += os.pathsep + os.path.dirname(__file__)
+os.environ["PATH"] = os.path.dirname(__file__) + os.pathsep + os.environ["PATH"]
 ```
 If libwinmedia.dll is located elsewhere, you can add that path to `os.environ["PATH"]`.
 
