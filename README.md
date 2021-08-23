@@ -1,5 +1,5 @@
 # libwinmedia-py
-A Python port of libwinmedia, a tiny high-level media playback library for C++.
+Python bindings for [libwinmedia](https://github.com/harmonoid/libwinmedia), a tiny yet powerful media playback library for Windows.
 
 # Installation
 You can install latest version from Git using this command:
@@ -7,45 +7,28 @@ You can install latest version from Git using this command:
 pip install git+https://github.com/libwinmedia/libwinmedia-py
 ```
 
-# Requirements & dependencies
-This library DOES NOT depend on any Python library, that isn't included in standard library...
-
-But it depends on C++ code, thus a .dll file (on Windows) or a .so file (on Linux) must be located in PATH
+# Requirements
+You need to download a libwinmedia.dll from the [releases page](https://github.com/harmonoid/libwinmedia/releases) and set it up properly. You can either put it somewhere in the %PATH% or set the `LIBWINMEDIA_PATH` enviroment variable.
 
 # Simple start
 ```py
 import libwinmedia
 
-# This creates a Player instance
-player = libwinmedia.Player(1000, False)
+player = libwinmedia.Player(1)
 
-# This creates media instance
-media = libwinmedia.Media(1000, "https://archive.org/download/Kalimba.mp3_377/Kalimba.mp3")
+media = libwinmedia.Media(1, "https://archive.org/download/Kalimba.mp3_377/Kalimba.mp3")
 
-# This provides player a media instance
-# Normally this command autostarts playing, which you can change using autostart parameter
-player.open(media, autostart=True) # autostart is default to True
+player.open(media)
 ```
 
-When you stop using libwinmedia (before you stop program), I recommend disposing instance to free up some system resources
+When you don't need any of the created instances, you can dispose them to free up system resources:
 ```py
 player.dispose()
 media.dispose()
 ```
 
-## Setting parameters & getting current data
-You can get parameters using setters & getters.
-
-Example:
-```py
->> player.volume
-100
->> player.volume = 60
->> player.volume
-60
-```
-
-Setters & getters in Player instance are:
+## Parameters
+You have access to thses parameters of the `Player`:
 - looping
 - autoplay
 - audio_balance
@@ -54,7 +37,7 @@ Setters & getters in Player instance are:
 - position
 
 ## Callbacks
-This library provides some callbacks, that are quite straight-forward to use...
+This library provides callbacks.
 Example:
 ```py
 from ctypes import CFUNCTYPE, c_float
@@ -71,23 +54,8 @@ player.setVolumeEventHandler(callbackVolume)
 | setVolumeEventHandler    | float (between 0 and 1, thus you might have to multiply it by 100) |
 | setRateEventHandler      | float (between 0 and 1, thus you might have to multiply it by 100) |
 | setIsDoneEventHandler    | bool                                                               |
-| setPositionEventHandler  | int (is in miliseconds)                                            |
-| setDurationEventHandler  | int (is in miliseconds)                                            |
-
-## Seek (change position)
-Player instance provides 2 options for seeking (rewinding)
-
-Position is in milliseconds, so if you want it in seconds, divide it by 1000
-
-One is by using setter, eg.
-```py
->> player.position = 1000
-```
-
-Second one is by using function
-```py
->> player.seek(1000)
-```
+| setPositionEventHandler  | int (in miliseconds)                                               |
+| setDurationEventHandler  | int (in miliseconds)                                               |
 
 # TODO:
 - Implement NativeControls
@@ -103,6 +71,6 @@ Without this library, this project wouldn't exist.
 # Documentation
 This repository includes an example file, called example.py
 
-In it, there is used almost every function this library provides...
+In it, there is used almost every function this library provides.
 
 Every function is documented (in code or in this file).

@@ -1,89 +1,52 @@
 from .media import Media
 from .library import lib
 
-from ctypes import c_int32, c_float, c_void_p, CFUNCTYPE
+from ctypes import c_int32, c_float
+
 
 class Player(object):
-    media = None
+    """A class for controlling a media player."""
 
     def __init__(self, id: int, showVideo: bool = False):
-        """
-        Here you create a player instance.
+        """Create a new Player instance.
 
         Args:
-            id (int): A unique ID that is used to separate this player from others
-            showVideo (bool, optional): Shows video window - defaults to False
-
-        This function returns:
-            None
+            id (int): A unique ID that is used to distinguish this player from others.
+            showVideo (bool, optional): Whether to show the video window. Defaults to False.
         """
 
         self.id = id
         lib.PlayerCreate(self.id, showVideo)
 
     def open(self, media: Media, autostart: bool = True) -> None:
-        """
-        Here you provide a Media instance to player
+        """Provide a Media instance to the player.
 
         Args:
-            media (Media): A media file in Media instance
-            autostart (bool, optional): Autostarts playing the provided Media instance - defaults to True
-
-        This function returns:
-            None
+            media (Media): A media file.
+            autostart (bool, optional): Whether to autostart playback of the provided media. Defaults to True.
         """
-
-        self.media = media
 
         lib.PlayerOpen(self.id, media.id)
         if autostart:
             self.play()
 
     def play(self) -> None:
-        """
-        Here you start playing media currently open in Player instance
-
-        This function has no arguments
-
-        This function returns:
-            None
-        """
+        """Start playing the media that is currently open in the player."""
 
         lib.PlayerPlay(self.id)
 
     def pause(self) -> None:
-        """
-        This function pauses currently playing media in Player instance
-
-        This function has no arguments
-
-        This function returns:
-            None
-        """
+        """Pause the playback of the current media."""
 
         lib.PlayerPause(self.id)
 
     def dispose(self) -> None:
-        """
-        This function disposes system resources, and kills this player instance
-
-        This function has no arguments
-
-        This function returns:
-            None
-        """
+        """Release system resources and kill the player instance."""
 
         lib.PlayerDispose(self.id)
 
     def closeWindow(self) -> None:
-        """
-        This function closes Video player window
-
-        This function has no arguments
-
-        This function returns:
-            None
-        """
+        """Close the video player window."""
 
         lib.PlayerCloseWindow(self.id)
 
@@ -159,5 +122,3 @@ class Player(object):
 
     def setDurationEventHandler(self, callback) -> None:
         lib.PlayerSetDurationEventHandler(self.id, callback)
-
-

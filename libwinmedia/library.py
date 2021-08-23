@@ -7,6 +7,19 @@ lib_name = "libwinmedia.dll"
 
 
 def find_lib() -> ctypes.CDLL:
+    """Search for the library.
+
+    You can place the DLL somewhere in %PATH% or set
+    the environment variable "LIBWINMEDIA_PATH".
+
+    Raises:
+        OSError: The "LIBWINMEDIA_PATH" env variable is invalid.
+        OSError: libwinmedia.dll is not found.
+
+    Returns:
+        ctypes.CDLL: An instance of the DLL.
+    """
+
     # search in env variables
     if "LIBWINMEDIA_PATH" in os.environ:
         try:
