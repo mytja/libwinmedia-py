@@ -8,7 +8,14 @@ pip install git+https://github.com/libwinmedia/libwinmedia-py
 ```
 
 # Requirements
-You need to download a libwinmedia.dll from the [releases page](https://github.com/harmonoid/libwinmedia/releases) and set it up properly. You can either put it somewhere in the %PATH% or set the `LIBWINMEDIA_PATH` enviroment variable.
+You need to download a libwinmedia.dll from the [releases page](https://github.com/harmonoid/libwinmedia/releases) and set it up properly. You can either put it somewhere in the `%PATH%` or set the `LIBWINMEDIA_PATH` enviroment variable.
+
+Another way to deal with it is to ship libwinmedia.dll with your script and put the directory where your script is located in %PATH% before importing the library:
+```py
+import os
+os.environ["PATH"] += os.pathsep + os.path.dirname(__file__)
+```
+If libwinmedia.dll is located elsewhere, you can add that path to `os.environ["PATH"]`.
 
 # Simple start
 ```py
