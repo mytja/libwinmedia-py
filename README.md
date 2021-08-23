@@ -44,21 +44,20 @@ You have access to thses parameters of the `Player`:
 - position
 
 ## Callbacks
-This library provides callbacks.
-Example:
+This library provides callbacks. You need to decorate your functions as follows:
 ```py
 @player.volume_callback()
 def callback(volume: float):
     print("Volume callback: " + str(volume * 100))
 ```
 
-| Callback function setter | Type, returned from function                                       |
-|--------------------------|--------------------------------------------------------------------|
-| volume_callback      | float (between 0 and 1, thus you might have to multiply it by 100) |
-| rate_callback        | float (between 0 and 1, thus you might have to multiply it by 100) |
-| completed_callback   | bool                                                               |
-| position_callback    | int (in miliseconds)                                               |
-| duration_callback    | int (in miliseconds)                                               |
+| Callback decorator  | Type, returned from function                                       |
+|---------------------|--------------------------------------------------------------------|
+| volume_callback     | float (between 0 and 1, thus you might have to multiply it by 100) |
+| rate_callback       | float (between 0 and 1, thus you might have to multiply it by 100) |
+| completed_callback  | bool                                                               |
+| position_callback   | int (in miliseconds)                                               |
+| duration_callback   | int (in miliseconds)                                               |
 
 # TODO:
 - Implement NativeControls
