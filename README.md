@@ -47,22 +47,18 @@ You have access to thses parameters of the `Player`:
 This library provides callbacks.
 Example:
 ```py
-from ctypes import CFUNCTYPE, c_float
-
-@CFUNCTYPE(None, c_float)
-def callback_volume(volume: float):
+@player.volume_callback()
+def callback(volume: float):
     print("Volume callback: " + str(volume * 100))
-
-player.set_volume_callback(callback_volume)
 ```
-### We got these callbacks, which return type:
+
 | Callback function setter | Type, returned from function                                       |
 |--------------------------|--------------------------------------------------------------------|
-| set_volume_callback      | float (between 0 and 1, thus you might have to multiply it by 100) |
-| set_rate_callback        | float (between 0 and 1, thus you might have to multiply it by 100) |
-| set_completed_callback   | bool                                                               |
-| set_position_callback    | int (in miliseconds)                                               |
-| set_duration_callback    | int (in miliseconds)                                               |
+| volume_callback      | float (between 0 and 1, thus you might have to multiply it by 100) |
+| rate_callback        | float (between 0 and 1, thus you might have to multiply it by 100) |
+| completed_callback   | bool                                                               |
+| position_callback    | int (in miliseconds)                                               |
+| duration_callback    | int (in miliseconds)                                               |
 
 # TODO:
 - Implement NativeControls

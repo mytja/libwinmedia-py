@@ -11,12 +11,12 @@ player = libwinmedia.Player()
 media = libwinmedia.Media("https://archive.org/download/Kalimba.mp3_377/Kalimba.mp3")
 
 
-@CFUNCTYPE(None, c_float)
+@player.volume_callback()
 def callback_volume(volume: float):
     print("Volume callback: " + str(volume * 100))
 
 
-@CFUNCTYPE(None, c_float)
+@player.rate_callback()
 def callback_rate(rate: float):
     print("Rate callback: " + str(rate * 100))
 
@@ -37,8 +37,6 @@ def button_native_callback(button: int):
 
 
 player.open(media)
-player.set_volume_callback(callback_volume)
-player.set_rate_callback(callback_rate)
 
 nativecontrols = libwinmedia.NativeControls()
 nativecontrols.create(button_native_callback)

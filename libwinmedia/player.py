@@ -1,7 +1,8 @@
 from .media import Media
 from .library import lib
+from typing import Callable
 
-from ctypes import c_int32, c_float
+from ctypes import CFUNCTYPE, c_bool, c_int32, c_float
 
 player_id = 0
 
@@ -20,6 +21,9 @@ class Player(object):
         self.id = player_id
         lib.PlayerCreate(self.id, showVideo)
         player_id += 1
+
+        # to prevent callbacks from being garbage collected
+        self._callbacks = []
 
     def open(self, media: Media, autostart: bool = True) -> None:
         """Provide a Media instance to the player.
@@ -47,6 +51,7 @@ class Player(object):
         """Release system resources and kill the player instance."""
 
         lib.PlayerDispose(self.id)
+        self._callbacks.clear()
 
     def close_window(self) -> None:
         """Close the video player window."""
@@ -110,23 +115,79 @@ class Player(object):
     def seek(self, value: int) -> None:
         self.position = value
 
-    def set_playing_callback(self, callback) -> None:
-        lib.PlayerSetIsPlayingEventHandler(self.id, callback)
-    
-    def set_completed_callback(self, callback) -> None:
-        lib.PlayerSetIsCompletedEventHandler(self.id, callback)
+    def set_playing_callback(self, callback: Callable[[bool], None]) -> None:
+        cb = CFUNCTYPE(None, c_bool)(callback)
+        self._callbacks.append(cb)
+        lib.PlayerSetIsPlayingEventHandler(self.id, cb)
 
-    def set_buffering_callback(self, callback) -> None:
-        lib.PlayerSetIsBufferingEventHandler(self.id, callback)
+    def playing_callback(self) -> Callable[[Callable[[bool], None]], None]:
+        def wrapper(callback: Callable[[bool], None]) -> None:
+            self.set_playing_callback(callback)
 
-    def set_volume_callback(self, callback) -> None:
-        lib.PlayerSetVolumeEventHandler(self.id, callback)
+        return wrapper
 
-    def set_rate_callback(self, callback) -> None:
-        lib.PlayerSetRateEventHandler(self.id, callback)
+    def set_completed_callback(self, callback: Callable[[bool], None]) -> None:
+        cb = CFUNCTYPE(None, c_bool)(callback)
+        self._callbacks.append(cb)
+        lib.PlayerSetIsCompletedEventHandler(self.id, cb)
 
-    def set_position_callback(self, callback) -> None:
-        lib.PlayerSetPositionEventHandler(self.id, callback)
+    def completed_callback(self) -> Callable[[Callable[[bool], None]], None]:
+        def wrapper(callback: Callable[[bool], None]) -> None:
+            self.set_completed_callback(callback)
 
-    def set_duration_callback(self, callback) -> None:
-        lib.PlayerSetDurationEventHandler(self.id, callback)
+        return wrapper
+
+    def set_buffering_callback(self, callback: Callable[[bool], None]) -> None:
+        cb = CFUNCTYPE(None, c_bool)(callback)
+        self._callbacks.append(cb)
+        lib.PlayerSetIsBufferingEventHandler(self.id, cb)
+
+    def buffering_callback(self) -> Callable[[Callable[[bool], None]], None]:
+        def wrapper(callback: Callable[[bool], None]) -> None:
+            self.set_buffering_callback(callback)
+
+        return wrapper
+
+    def set_volume_callback(self, callback: Callable[[float], None]) -> None:
+        cb = CFUNCTYPE(None, c_float)(callback)
+        self._callbacks.append(cb)
+        lib.PlayerSetVolumeEventHandler(self.id, cb)
+
+    def volume_callback(self) -> Callable[[Callable[[float], None]], None]:
+        def wrapper(callback: Callable[[float], None]) -> None:
+            self.set_volume_callback(callback)
+
+        return wrapper
+
+    def set_rate_callback(self, callback: Callable[[float], None]) -> None:
+        cb = CFUNCTYPE(None, c_float)(callback)
+        self._callbacks.append(cb)
+        lib.PlayerSetRateEventHandler(self.id, cb)
+
+    def rate_callback(self) -> Callable[[Callable[[float], None]], None]:
+        def wrapper(callback: Callable[[float], None]) -> None:
+            self.set_rate_callback(callback)
+
+        return wrapper
+
+    def set_position_callback(self, callback: Callable[[int], None]) -> None:
+        cb = CFUNCTYPE(None, c_int32)(callback)
+        self._callbacks.append(cb)
+        lib.PlayerSetPositionEventHandler(self.id, cb)
+
+    def position_callback(self) -> Callable[[Callable[[int], None]], None]:
+        def wrapper(callback: Callable[[int], None]) -> None:
+            self.set_position_callback(callback)
+
+        return wrapper
+
+    def set_duration_callback(self, callback: Callable[[int], None]) -> None:
+        cb = CFUNCTYPE(None, c_int32)(callback)
+        self._callbacks.append(cb)
+        lib.PlayerSetDurationEventHandler(self.id, cb)
+
+    def duration_callback(self) -> Callable[[Callable[[int], None]], None]:
+        def wrapper(callback: Callable[[int], None]) -> None:
+            self.set_duration_callback(callback)
+
+        return wrapper
