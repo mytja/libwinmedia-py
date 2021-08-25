@@ -1,0 +1,3 @@
+include README.md
+include libwinmedia/*.dll
+recursive-include libwinmedia *.py
