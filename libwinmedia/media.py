@@ -1,6 +1,6 @@
 from .library import lib
 from ctypes import POINTER, c_wchar, c_wchar_p
-from tags import MusicTags, VideoTags
+from .tags import MusicTags, VideoTags
 
 media_id = 0
 
