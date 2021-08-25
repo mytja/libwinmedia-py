@@ -111,7 +111,7 @@ class Player(object):
     @rate.setter
     def rate(self, value: float) -> None:
         lib.PlayerSetRate.argtypes = [c_int32, c_float]
-        lib.PlayerSetRate(self.id, value / 100)
+        lib.PlayerSetRate(self.id, value)
 
     @property
     def volume(self) -> float:
@@ -119,9 +119,9 @@ class Player(object):
         return lib.PlayerGetVolume(self.id) * 100
 
     @volume.setter
-    def volume(self, value: int) -> None:
+    def volume(self, value: float) -> None:
         lib.PlayerSetVolume.argtypes = [c_int32, c_float]
-        lib.PlayerSetVolume(self.id, value / 100)
+        lib.PlayerSetVolume(self.id, value)
 
     @property
     def position(self) -> int:

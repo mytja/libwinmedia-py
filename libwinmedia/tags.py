@@ -4,20 +4,21 @@ class MusicTags:
         return {
             "album": tags[0],
             "albumArtist": tags[1],
-            "bitrate": int(tags[2]),
+            "bitrate": tags[2],
             "composers": tags[3],
             "conductors": tags[4],
-            "duration": int(tags[5]),
+            "duration": tags[5],
             "genre": tags[6],
             "producers": tags[7],
             "publisher": tags[8],
-            "rating": int(tags[9]),
+            "rating": tags[9],
             "subtitle": tags[10],
             "title": tags[11],
-            "trackNumber": int(tags[12]),
+            "trackNumber": tags[12],
             "writers": tags[13],
-            "year": int(tags[14]),
+            "year": tags[14],
         }
+
 
 class VideoTags:
     @staticmethod

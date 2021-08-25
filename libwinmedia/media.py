@@ -56,4 +56,6 @@ class Media(object):
             outputFolder (str): A folder for saving the thumbnail.
             outputFile (str): A name of the thumbnail file.
         """
-        lib.TagsExtractThumbnail(self.uri, "file://" + output_folder, output_file, 2, 400)
+        lib.TagsExtractThumbnail(
+            self.uri, "file://" + output_folder, output_file, 2, 400
+        )
