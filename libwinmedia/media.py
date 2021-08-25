@@ -1,5 +1,6 @@
 from .library import lib
-from ctypes import POINTER, c_wchar
+from ctypes import POINTER, c_wchar, c_wchar_p
+from itertools import takewhile
 
 media_id = 0
 
@@ -34,10 +35,19 @@ class Media(object):
 
     def get_metadata(self) -> str:
         # TODO: add docstring
-        lib.TagsFromMusic.args = [POINTER(c_wchar)]
-        lib.TagsFromMusic.restype = POINTER(POINTER(c_wchar))
+        lib.TagsFromMusic.args = [c_wchar_p]
+        lib.TagsFromMusic.restype = POINTER(c_wchar_p)
 
-        return lib.TagsFromMusic(self.uri)
+        meta = lib.TagsFromMusic(self.uri)
+
+        self.tags = []
+        for s in meta:
+            if s == None:
+                return self.tags
+            self.tags.append(s)
+            print(s)
+
+        return self.tags
 
     def extract_thumbnail(self, outputFolder: str, outputFile: str) -> None:
         """Extract the thumbnail and save it to a file.

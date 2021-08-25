@@ -1,11 +1,11 @@
+from .playlist import Playlist
 from .media import Media
 from .library import lib
-from typing import Callable
+from typing import Callable, Union
 
-from ctypes import CFUNCTYPE, c_bool, c_int32, c_float
+from ctypes import CFUNCTYPE, POINTER, Structure, c_bool, c_int, c_int32, c_float, c_wchar, c_wchar_p, pointer
 
 player_id = 0
-
 
 class Player(object):
     """A class for controlling a media player."""
@@ -25,15 +25,24 @@ class Player(object):
         # to prevent callbacks from being garbage collected
         self._callbacks = []
 
-    def open(self, media: Media, autostart: bool = True) -> None:
+    def open(self, media: Union[Media, Playlist], autostart: bool = True) -> None:
         """Provide a Media instance to the player.
 
         Args:
-            media (Media): A media file.
+            media (Media or Playlist): A media file or a Playlist.
             autostart (bool, optional): Whether to autostart playback of the provided media. Defaults to True.
         """
+        print(type(media) is Media)
+        if type(media) is Media:
+            playlist = Playlist()
+            playlist.add(media)
+        else:
+            playlist = media
+        
+        uris = (c_wchar_p * len(playlist.getAllUris()))(*playlist.getAllUris())
+        ids = (c_int32 * len(playlist.getAllIDs()))(*playlist.getAllIDs())
 
-        lib.PlayerOpen(self.id, media.id)
+        lib.PlayerOpen(self.id, len(playlist.medias), uris, ids)
         if autostart:
             self.play()
 
@@ -46,6 +55,15 @@ class Player(object):
         """Pause the playback of the current media."""
 
         lib.PlayerPause(self.id)
+    
+    def next(self) -> None:
+        lib.PlayerNext(self.id)
+    
+    def back(self) -> None:
+        lib.PlayerBack(self.id)
+
+    def jump(self, id: int) -> None:
+        lib.PlayerJump(self.id, id)
 
     def dispose(self) -> None:
         """Release system resources and kill the player instance."""
