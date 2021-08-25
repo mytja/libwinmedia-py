@@ -1,7 +1,7 @@
 import os
-from ctypes import c_int32, POINTER, c_wchar
+from ctypes import c_int32, POINTER, c_wchar, c_wchar_p
 
-from . import Player
+from . import Media, Player
 from .library import lib
 
 
@@ -27,29 +27,47 @@ class NativeControlsButton:
 
 
 class NativeControls:
+    def __init__(self, player: Player):
+        self.player = player
+
     def create(self, callback):
-        lib.NativeControlsCreate(callback)
+        lib.PlayerNativeControlsCreate(self.player.id, callback)
 
-    def set_status(self, player: Player, status: int):
-        lib.PlayerNativeControlsSetStatus(player.id, status)
+    def set_status(self, status: int):
+        lib.PlayerNativeControlsSetStatus(self.player.id, status)
 
-    def update(self, player: Player):
+    def update(self, media: Media):
         folder = os.path.dirname(__file__)
         file = "thumbnail.png"
         thumb = os.path.join(folder, file)
-        player.media.extractThumbnail(folder, file)
+        media.extract_thumbnail(folder, file)
 
         lib.PlayerNativeControlsUpdate.argtypes = [
             c_int32,
             c_int32,
-            POINTER(POINTER(c_wchar)),
-            POINTER(c_wchar),
+            POINTER(c_wchar_p),
+            c_wchar_p,
         ]
 
-        lib.PlayerNativeControlsUpdate(player.id, 0, player.media.getMetadata(), thumb)
+        meta = media.TagsFromMusic()
+
+        metalist = [
+            meta["albumArtist"],
+            meta["title"],
+            "1",
+            meta["publisher"],
+            meta["title"],
+            str(meta["trackNumber"])
+        ]
+
+        metas = (c_wchar_p * len(metalist))(*metalist)
+
+        lib.PlayerNativeControlsUpdate(
+            self.player.id, 0, metas, thumb
+        )
 
     def clear(self):
-        lib.NativeControlsClear()
+        lib.PlayerNativeControlsClear(self.player.id)
 
     def dispose(self):
-        lib.NativeControlsDispose()
+        lib.PlayerNativeControlsDispose(self.player.id)

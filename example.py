@@ -1,19 +1,22 @@
 import os
+import libwinmedia
+import time
+
+from ctypes import c_int32, CFUNCTYPE
+
 os.environ["PATH"] = os.path.dirname(__file__) + os.pathsep + os.environ["PATH"]
 # Place the DLL right next to the script.
 
-import libwinmedia
-import time
-from ctypes import c_int32, CFUNCTYPE, c_float
-from itertools import takewhile
-
 player = libwinmedia.Player()
 
-media1 = libwinmedia.Media("file://D:/libwinmedia-py/test.ogg")
-media2 = libwinmedia.Media("https://p.scdn.co/mp3-preview/669eef4c25c47eb54c8c0bceee55b94519f3b0c1?cid=774b29d4f13844c495f206cafdad9c86")
+media1 = libwinmedia.Media("file://D:/libwinmedia-py/test.mp3")
+media2 = libwinmedia.Media(
+    "https://p.scdn.co/mp3-preview/669eef4c25c47eb54c8c0bceee55b94519f3b0c1?cid=774b29d4f13844c495f206cafdad9c86"
+)
 playlist = libwinmedia.Playlist()
 playlist.add(media1)
 playlist.add(media2)
+
 
 @player.volume_callback()
 def callback_volume(volume: float):
@@ -42,9 +45,10 @@ def button_native_callback(button: int):
 
 player.open(media1)
 
-nativecontrols = libwinmedia.NativeControls()
+nativecontrols = libwinmedia.NativeControls(player)
 nativecontrols.create(button_native_callback)
-#nativecontrols.update(player)
+nativecontrols.set_status(libwinmedia.NativeControlsStatus.Playing)
+nativecontrols.update(media1)
 
 print("Now playing")
 player.play()
@@ -54,8 +58,9 @@ print("Rate: " + str(player.rate))
 print("Audio balance: " + str(player.audio_balance))
 print("Volume: " + str(player.volume))
 print("Is looping: " + str(player.looping))
-#print("Media 1 duration: " + str(media1.duration))
-#print("Media 2 duration: " + str(media2.duration))
+# print("Media 1 duration: " + str(media1.duration))
+# print("Media 2 duration: " + str(media2.duration))
+print("Metadata: " + str(media1.get_metadata_from_music()))
 print("Position: " + str(player.position))
 
 time.sleep(3)

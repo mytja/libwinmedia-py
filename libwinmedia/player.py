@@ -16,7 +16,6 @@ class Player(object):
         Args:
             showVideo (bool, optional): Whether to show the video window. Defaults to False.
         """
-
         global player_id
         self.id = player_id
         lib.PlayerCreate(self.id, showVideo)
