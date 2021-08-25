@@ -1,5 +1,5 @@
 from .library import lib
-from ctypes import POINTER, c_wchar, c_wchar_p
+from ctypes import POINTER, c_wchar_p
 from .tags import MusicTags, VideoTags
 
 media_id = 0
@@ -27,13 +27,14 @@ class Media(object):
 
     def dispose(self) -> None:
         """Release system resources and kill the media instance."""
+
         lib.MediaDispose(self.id)
 
     @property
     def duration(self) -> int:
         return lib.MediaGetDuration(self.id)
 
-    def TagsFromMusic(self) -> dict:
+    def tags_from_music(self) -> dict:
         # TODO: add docstring
         lib.TagsFromMusic.args = [c_wchar_p]
         lib.TagsFromMusic.restype = POINTER(c_wchar_p)
@@ -41,18 +42,18 @@ class Media(object):
         meta = lib.TagsFromMusic(self.uri)
         return MusicTags.get(meta)
 
-    def TagsFromVideo(self) -> dict:
+    def tags_from_video(self) -> dict:
         lib.TagsFromVideo.args = [c_wchar_p]
         lib.TagsFromVideo.restype = POINTER(c_wchar_p)
 
         meta = lib.TagsFromVideo(self.uri)
         return VideoTags.get(meta)
 
-    def extract_thumbnail(self, outputFolder: str, outputFile: str) -> None:
+    def extract_thumbnail(self, output_folder: str, output_file: str) -> None:
         """Extract the thumbnail and save it to a file.
 
         Args:
             outputFolder (str): A folder for saving the thumbnail.
             outputFile (str): A name of the thumbnail file.
         """
-        lib.TagsExtractThumbnail(self.uri, "file://" + outputFolder, outputFile, 2, 400)
+        lib.TagsExtractThumbnail(self.uri, "file://" + output_folder, output_file, 2, 400)

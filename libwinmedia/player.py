@@ -3,9 +3,10 @@ from .media import Media
 from .library import lib
 from typing import Callable, Union
 
-from ctypes import CFUNCTYPE, POINTER, Structure, c_bool, c_int, c_int32, c_float, c_wchar, c_wchar_p, pointer
+from ctypes import CFUNCTYPE, c_bool, c_int32, c_float, c_wchar_p
 
 player_id = 0
+
 
 class Player(object):
     """A class for controlling a media player."""
@@ -16,6 +17,7 @@ class Player(object):
         Args:
             showVideo (bool, optional): Whether to show the video window. Defaults to False.
         """
+
         global player_id
         self.id = player_id
         lib.PlayerCreate(self.id, showVideo)
@@ -31,17 +33,17 @@ class Player(object):
             media (Media or Playlist): A media file or a Playlist.
             autostart (bool, optional): Whether to autostart playback of the provided media. Defaults to True.
         """
-        print(type(media) is Media)
+
         if type(media) is Media:
             playlist = Playlist()
             playlist.add(media)
         else:
             playlist = media
-        
-        uris = (c_wchar_p * len(playlist.getAllUris()))(*playlist.getAllUris())
-        ids = (c_int32 * len(playlist.getAllIDs()))(*playlist.getAllIDs())
 
-        lib.PlayerOpen(self.id, len(playlist.medias), uris, ids)
+        uris = (c_wchar_p * len(playlist))(*playlist.uris)
+        ids = (c_int32 * len(playlist))(*playlist.ids)
+
+        lib.PlayerOpen(self.id, len(playlist), uris, ids)
         if autostart:
             self.play()
 
@@ -54,10 +56,10 @@ class Player(object):
         """Pause the playback of the current media."""
 
         lib.PlayerPause(self.id)
-    
+
     def next(self) -> None:
         lib.PlayerNext(self.id)
-    
+
     def back(self) -> None:
         lib.PlayerBack(self.id)
 

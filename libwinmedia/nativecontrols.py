@@ -1,8 +1,7 @@
 import os
-from ctypes import c_int32, POINTER, c_wchar, c_wchar_p
-
 from . import Media, Player
 from .library import lib
+from ctypes import c_int32, POINTER, c_wchar_p
 
 
 class NativeControlsStatus:
@@ -57,14 +56,12 @@ class NativeControls:
             "1",
             meta["publisher"],
             meta["title"],
-            str(meta["trackNumber"])
+            str(meta["trackNumber"]),
         ]
 
         metas = (c_wchar_p * len(metalist))(*metalist)
 
-        lib.PlayerNativeControlsUpdate(
-            self.player.id, 0, metas, thumb
-        )
+        lib.PlayerNativeControlsUpdate(self.player.id, 0, metas, thumb)
 
     def clear(self):
         lib.PlayerNativeControlsClear(self.player.id)
