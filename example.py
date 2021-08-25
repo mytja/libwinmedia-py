@@ -1,11 +1,11 @@
 import os
+# Place the DLL right next to the script.
+os.environ["PATH"] = os.path.dirname(__file__) + os.pathsep + os.environ["PATH"]
+
 import libwinmedia
 import time
 
 from ctypes import c_int32, CFUNCTYPE
-
-os.environ["PATH"] = os.path.dirname(__file__) + os.pathsep + os.environ["PATH"]
-# Place the DLL right next to the script.
 
 player = libwinmedia.Player()
 
