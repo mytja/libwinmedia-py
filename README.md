@@ -2,10 +2,16 @@
 Python bindings for [libwinmedia](https://github.com/harmonoid/libwinmedia), a tiny yet powerful media playback library for Windows.
 
 # Installation
-You can install latest version from Git using this command:
+You can install latest stable version from PyPI using this command:
+```shell
+pip install libwinmedia
+```
+
+You can install the latest version from Git using this command:
 ```shell
 pip install git+https://github.com/libwinmedia/libwinmedia-py
 ```
+This source might be more stable in some cases, but can be less stable than latest PyPI release
 
 # Requirements
 You need to download a libwinmedia.dll from the [releases page](https://github.com/harmonoid/libwinmedia/releases) and set it up properly. You can either put it somewhere in the `%PATH%` or set the `LIBWINMEDIA_PATH` enviroment variable.
@@ -69,6 +75,9 @@ Show some love to this project and consider starring the repository & check out 
 
 Special thanks to [@alexmercerind](https://github.com/alexmercerind) for [C++ library](https://github.com/libwinmedia/libwinmedia).
 Without this library, this project wouldn't exist.
+
+Huge thanks also to [@raitonoberu](https://github.com/raitonoberu) for his massive contributions to Python bindings.
+He has brought current easy-to-use design to this library.
 
 # Documentation
 This repository includes an example file, called example.py

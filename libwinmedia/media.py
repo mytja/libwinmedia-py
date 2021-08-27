@@ -1,3 +1,5 @@
+import os
+
 from .library import lib
 from ctypes import POINTER, c_wchar_p
 from .tags import MusicTags, VideoTags
@@ -21,6 +23,8 @@ class Media(object):
 
         global media_id
         self.id = media_id
+        if not os.path.isabs(uri):
+            uri = os.path.join(os.path.dirname(os.path.abspath(uri)), uri)
         self.uri = uri
         lib.MediaCreate(self.id, uri, parse)
         media_id += 1

@@ -48,7 +48,7 @@ class NativeControls:
             c_wchar_p,
         ]
 
-        meta = media.TagsFromMusic()
+        meta = media.tags_from_music()
 
         metalist = [
             meta["albumArtist"],

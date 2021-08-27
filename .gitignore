@@ -143,3 +143,6 @@ libwinmedia.dll
 
 # PyCharm
 .idea/
+
+# Some more stuff
+test.py

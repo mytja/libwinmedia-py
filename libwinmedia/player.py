@@ -40,10 +40,10 @@ class Player(object):
         else:
             playlist = media
 
-        uris = (c_wchar_p * len(playlist))(*playlist.uris)
-        ids = (c_int32 * len(playlist))(*playlist.ids)
+        uris = (c_wchar_p * len(playlist.uris))(*playlist.uris)
+        ids = (c_int32 * len(playlist.ids))(*playlist.ids)
 
-        lib.PlayerOpen(self.id, len(playlist), uris, ids)
+        lib.PlayerOpen(self.id, len(playlist.medias), uris, ids)
         if autostart:
             self.play()
 

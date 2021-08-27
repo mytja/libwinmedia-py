@@ -15,18 +15,19 @@ class Playlist:
         self.medias.pop(i)
 
     @property
-    def uris(self) -> list:
+    def uris(self) -> list[str]:
         uris = []
         for media in self.medias:
             uris.append(media.uri)
         return uris
 
     @property
-    def ids(self) -> list:
+    def ids(self) -> list[int]:
         ids = []
         for media in self.medias:
             ids.append(media.id)
         return ids
 
-    def __len__(self) -> int:
+    @property
+    def length(self) -> int:
         return len(self.medias)

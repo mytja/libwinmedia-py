@@ -1,7 +1,8 @@
 """Python bindings for libwinmedia.
 
 Use native Windows APIs to play local files and URLs,
-control playback, extract metadata, and show native controls."""
+control playback, extract metadata, and show native controls.
+"""
 
 from .player import Player
 from .media import Media

@@ -46,7 +46,7 @@ player.open(media1)
 nativecontrols = libwinmedia.NativeControls(player)
 nativecontrols.create(button_native_callback)
 nativecontrols.set_status(libwinmedia.NativeControlsStatus.Playing)
-nativecontrols.update(media1)
+# nativecontrols.update(media1)
 
 print("Now playing")
 player.play()
@@ -60,6 +60,7 @@ print("Is looping: " + str(player.looping))
 # print("Media 2 duration: " + str(media2.duration))
 print("Metadata: " + str(media1.tags_from_music()))
 print("Position: " + str(player.position))
+print(playlist.length)
 
 time.sleep(3)
 
