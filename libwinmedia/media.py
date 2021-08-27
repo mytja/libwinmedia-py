@@ -10,7 +10,7 @@ media_id = 0
 class Media(object):
     """A class representing a media file."""
 
-    def __init__(self, uri: str, parse: bool = False):
+    def __init__(self, uri: str, parse: bool = True):
         """Create a new Media instance.
 
         The URI can be either a local file (e.g. "file://C:/music/track.mp3")
@@ -18,7 +18,7 @@ class Media(object):
 
         Args:
             uri (str): A URI of the media.
-            parse (bool, optional): Whether to parse the media. Defaults to False.
+            parse (bool, optional): Whether to parse the media. Defaults to True. True is required for duration parsing
         """
 
         global media_id
