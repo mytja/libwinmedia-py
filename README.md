@@ -40,8 +40,34 @@ player.dispose()
 media.dispose()
 ```
 
+## Important!
+The program containing playing media must not exit before player is done playing.
+
+To do this in examples we recommend adding this at the end:
+```py
+while True:
+    pass
+```
+
+## Playlists
+You can open player (`player.open()`) with `Playlist` instance or with
+`Media` instance.
+
+If you open Player with Media, then it will play only one song, but if you open
+it with Playlist, then it will create a playlist and play it like that...
+
+Simple example:
+```py
+import libwinmedia
+
+player = Player()
+playlist = Playlist()
+
+player.open()
+```
+
 ## Parameters
-You have access to thses parameters of the `Player`:
+You have access to these parameters of the `Player` instance:
 - looping
 - autoplay
 - audio_balance
@@ -68,7 +94,6 @@ def callback(volume: float):
 # TODO:
 - Implement NativeControls
 - Implement Video support
-- Implement Video & Audio tags (metadata)
 
 # Support this project
 Show some love to this project and consider starring the repository & check out a whole [libwinmedia](https://github.com/libwinmedia) suite
