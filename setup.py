@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name="libwinmedia",
-      version="1.0",
+      version="1.0.0",
       description="Python bindings for libwinmedia, a tiny yet powerful media playback library for Windows.",
       long_description=open("README.md").read(),
       author="libwinmedia Team",
