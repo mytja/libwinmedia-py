@@ -1,6 +1,8 @@
 # libwinmedia-py
 Python bindings for [libwinmedia](https://github.com/harmonoid/libwinmedia), a tiny yet powerful media playback library for Windows.
 
+This library's goal is to make a beginner-friendly, easy-to-use API with many advanced features.
+
 # Installation
 You can install latest stable version from PyPI using this command:
 ```shell
