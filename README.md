@@ -60,10 +60,12 @@ Simple example:
 ```py
 import libwinmedia
 
-player = Player()
-playlist = Playlist()
+player = libwinmedia.Player()
+media1 = libwinmedia.Media("media1.ogg")
+media2 = libwinmedia.Media("media2.ogg")
+playlist = libwinmedia.Playlist(media1, media2)
 
-player.open()
+player.open(playlist)
 ```
 
 ## Parameters
