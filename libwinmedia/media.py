@@ -23,7 +23,7 @@ class Media(object):
 
         global media_id
         self.id = media_id
-        if not os.path.isabs(uri):
+        if not os.path.isabs(uri) and not ("https" in uri or "http" in uri):
             uri = os.path.join(os.path.dirname(os.path.abspath(uri)), uri)
         self.uri = uri
         lib.MediaCreate(self.id, uri, parse)

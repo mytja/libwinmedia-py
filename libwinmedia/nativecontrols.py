@@ -1,7 +1,9 @@
 import os
+from typing import Callable
+
 from . import Media, Player
 from .library import lib
-from ctypes import c_int32, POINTER, c_wchar_p
+from ctypes import c_int32, POINTER, c_wchar_p, CFUNCTYPE
 
 
 class NativeControlsStatus:
@@ -28,9 +30,18 @@ class NativeControlsButton:
 class NativeControls:
     def __init__(self, player: Player):
         self.player = player
+        self._callbacks = []
 
-    def create(self, callback):
-        lib.PlayerNativeControlsCreate(self.player.id, callback)
+    def create(self, callback: Callable[[int], None]) -> None:
+        cb = CFUNCTYPE(None, c_int32)(callback)
+        self._callbacks.append(cb)
+        lib.PlayerNativeControlsCreate(self.player.id, cb)
+
+    def create_callback(self) -> Callable[[Callable[[int], None]], None]:
+        def wrapper(callback: Callable[[int], None]) -> None:
+            self.create(callback)
+
+        return wrapper
 
     def set_status(self, status: int):
         lib.PlayerNativeControlsSetStatus(self.player.id, status)
@@ -61,7 +72,7 @@ class NativeControls:
 
         metas = (c_wchar_p * len(metalist))(*metalist)
 
-        lib.PlayerNativeControlsUpdate(self.player.id, 0, metas, thumb)
+        lib.PlayerNativeControlsUpdate(self.player.id, 1, metas, thumb)
 
     def clear(self):
         lib.PlayerNativeControlsClear(self.player.id)

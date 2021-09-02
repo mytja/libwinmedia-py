@@ -5,11 +5,9 @@ os.environ["PATH"] = os.path.dirname(__file__) + os.pathsep + os.environ["PATH"]
 import libwinmedia
 import time
 
-from ctypes import c_int32, CFUNCTYPE
-
 player = libwinmedia.Player()
 
-media1 = libwinmedia.Media("file://D:/libwinmedia-py/test.mp3")
+media1 = libwinmedia.Media("test.mp3")
 media2 = libwinmedia.Media(
     "https://p.scdn.co/mp3-preview/669eef4c25c47eb54c8c0bceee55b94519f3b0c1?cid=774b29d4f13844c495f206cafdad9c86"
 )
@@ -26,7 +24,12 @@ def callback_rate(rate: float):
     print("Rate callback: " + str(rate * 100))
 
 
-@CFUNCTYPE(None, c_int32)
+player.open(playlist)
+
+nativecontrols = libwinmedia.NativeControls(player)
+
+
+@nativecontrols.create_callback()
 def button_native_callback(button: int):
     print("Native button callback: " + str(button))
     if button == 0:
@@ -41,10 +44,6 @@ def button_native_callback(button: int):
         print("Previous")
 
 
-player.open(media1)
-
-nativecontrols = libwinmedia.NativeControls(player)
-nativecontrols.create(button_native_callback)
 nativecontrols.set_status(libwinmedia.NativeControlsStatus.Playing)
 # nativecontrols.update(media1)
 
