@@ -14,7 +14,6 @@ setup(name="libwinmedia",
           "libwinmedia": "libwinmedia",
       },
       classifiers=[
-          "Development Status :: 5 - Development/Alpha",
           "Topic :: Utilities",
           "License :: OSI Approved :: MIT License"
       ],
