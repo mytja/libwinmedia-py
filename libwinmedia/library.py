@@ -1,9 +1,12 @@
-import ctypes
+import platform
 import ctypes.util
 import os
 import ctypes
 
-lib_name = "libwinmedia.dll"
+if platform.system() == "Linux":
+    lib_name = "libwinmedia.so"
+elif platform.system() == "Windows":
+    lib_name = "libwinmedia.dll"
 
 
 def find_lib() -> ctypes.CDLL:
@@ -23,7 +26,8 @@ def find_lib() -> ctypes.CDLL:
     # search in env variables
     if "LIBWINMEDIA_PATH" in os.environ:
         try:
-            return ctypes.CDLL(os.environ["LIBWINMEDIA_PATH"])
+            lib_path = os.path.join(os.environ["LIBWINMEDIA_PATH"], lib_name)
+            return ctypes.CDLL(lib_path)
         except OSError:
             raise OSError("Invalid LIBWINMEDIA_PATH specified. Please fix.")
 

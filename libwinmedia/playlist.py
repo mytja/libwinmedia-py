@@ -1,3 +1,5 @@
+from typing import List
+
 from .media import Media
 
 
@@ -15,14 +17,14 @@ class Playlist:
         self.medias.pop(i)
 
     @property
-    def uris(self) -> list[str]:
+    def uris(self) -> List[str]:
         uris = []
         for media in self.medias:
             uris.append(media.uri)
         return uris
 
     @property
-    def ids(self) -> list[int]:
+    def ids(self) -> List[int]:
         ids = []
         for media in self.medias:
             ids.append(media.id)

@@ -1,5 +1,5 @@
 # libwinmedia-py
-Python bindings for [libwinmedia](https://github.com/harmonoid/libwinmedia), a tiny yet powerful media playback library for Windows.
+Python bindings for [libwinmedia](https://github.com/harmonoid/libwinmedia), a tiny yet powerful media playback library for Windows (and soon Linux).
 
 This library's goal is to make a beginner-friendly, easy-to-use API with many advanced features.
 
@@ -96,6 +96,7 @@ def callback(volume: float):
 | duration_callback   | int (in miliseconds)                                               |
 
 # TODO:
+- Linux support (in work)
 - Implement NativeControls
 - Implement Video support
 
