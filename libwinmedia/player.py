@@ -1,9 +1,13 @@
+import platform
+import time
+from threading import Thread
+
 from .playlist import Playlist
 from .media import Media
 from .library import lib
-from typing import Callable, Union
+from typing import Callable, Union, Optional
 
-from ctypes import CFUNCTYPE, c_bool, c_int32, c_float, c_wchar_p, c_char_p
+from ctypes import CFUNCTYPE, c_bool, c_int32, c_float, c_char_p
 
 player_id = 0
 
@@ -11,20 +15,51 @@ player_id = 0
 class Player(object):
     """A class for controlling a media player."""
 
-    def __init__(self, showVideo: bool = False):
+    def __init__(self, show_video: Optional[bool] = False, sleep: Optional[int] = 1):
         """Create a new [Player] instance.
 
+        This function creates another thread on Linux and adds a little delay on Linux for avoiding Python to be faster than C++
+
         Args:
-            showVideo (bool, optional): Whether to show the video window. Defaults to False.
+            show_video (bool, optional): Whether to show the video window. Defaults to False.
+            sleep (int, optional): Sleep after creating player instance. Defaults to 1.
         """
 
         global player_id
         self.id = player_id
-        lib.PlayerCreate(self.id, showVideo)
+
+        if platform.system() == "Linux":
+            """
+            Here we import PyGObject, which basically handles all kinds of GTK stuff
+            We need this, otherwise nothing would work... :sweat_smile:
+            I don't want this API to be blocking, so I decided to make it a little bit thready...
+            Now, this creates a thread, which basically handles all GTK operations (AFAIK)
+            So, this makes this API non-blocking.
+            This is executed only on Linux OS
+            """
+            import gi
+            gi.require_version("Gtk", "3.0")
+            self.gtkthread = Thread(target=Player.__runGTK)
+            self.gtkthread.start()
+
+        lib.PlayerCreate(self.id, show_video)
         player_id += 1
 
         # to prevent callbacks from being garbage collected
         self._callbacks = []
+
+        if platform.system() == "Linux":
+            """
+            Delay ensures object is inserted into the std::unordered_map before calling any Player attribute.
+            @alexmercerind will ensure the initialization in C++ itself in future & make this stuff sync.
+            I included this directly into function, since this is easiest for user...
+            """
+            time.sleep(sleep)
+
+    @staticmethod
+    def __runGTK():
+        from gi.repository import Gtk
+        Gtk.main()
 
     def open(self, media: Union[Media, Playlist], autostart: bool = True) -> None:
         """Provide a [Media] or [Playlist] instance to the [Player].
@@ -70,8 +105,9 @@ class Player(object):
         lib.PlayerJump(self.id, id)
 
     def dispose(self) -> None:
-        """Release system resources and kill the player instance."""
+        """Release system resources and kill the [Player] instance."""
 
+        self.close_window()
         lib.PlayerDispose(self.id)
         self._callbacks.clear()
 

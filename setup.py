@@ -18,5 +18,8 @@ setup(name="libwinmedia",
           "Topic :: Utilities",
           "License :: OSI Approved :: MIT License"
       ],
+      install_requires=[
+            'PyGObject; platform_system=="Linux"'
+      ],
       data_files=[]
 )
