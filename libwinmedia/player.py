@@ -1,5 +1,3 @@
-import ctypes
-
 from .playlist import Playlist
 from .media import Media
 from .library import lib
@@ -45,7 +43,7 @@ class Player(object):
         urislist = []
         for i in playlist.uris:
             urislist.append(i.encode("utf-8"))
-        uris = (ctypes.c_char_p * len(playlist.uris))(*urislist)
+        uris = (c_char_p * len(urislist))(*urislist)
         ids = (c_int32 * len(playlist.ids))(*playlist.ids)
 
         lib.PlayerOpen(self.id, len(playlist.medias), uris, ids)
