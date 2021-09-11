@@ -2,7 +2,8 @@ from .playlist import Playlist
 from .media import Media
 from .library import lib
 from typing import Callable, Union
-
+from platform import system
+from threading import Thread
 from ctypes import CFUNCTYPE, c_bool, c_int32, c_float, c_wchar_p, c_char_p
 
 player_id = 0
@@ -11,16 +12,21 @@ player_id = 0
 class Player(object):
     """A class for controlling a media player."""
 
-    def __init__(self, showVideo: bool = False):
+    def __init__(self, show_video: bool = False):
         """Create a new [Player] instance.
 
         Args:
-            showVideo (bool, optional): Whether to show the video window. Defaults to False.
+            show_video (bool, optional): Whether to show the video window. Defaults to False.
         """
 
         global player_id
         self.id = player_id
-        lib.PlayerCreate(self.id, showVideo)
+        lib.PlayerCreate(self.id, show_video)
+        if system() == 'Linux':
+            import gi
+            gi.require_version("Gtk", "3.0")
+            from gi.repository import Gtk
+            Thread(target=lambda: Gtk.main(), ).start()
         player_id += 1
 
         # to prevent callbacks from being garbage collected
