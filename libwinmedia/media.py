@@ -2,7 +2,7 @@ import os
 import platform
 
 from .library import lib
-from ctypes import POINTER, c_wchar_p
+from ctypes import POINTER, c_char_p
 from .tags import MusicTags, VideoTags
 
 media_id = 0
@@ -42,15 +42,15 @@ class Media(object):
 
     def tags_from_music(self) -> dict:
         # TODO: add docstring
-        lib.TagsFromMusic.args = [c_wchar_p]
-        lib.TagsFromMusic.restype = POINTER(c_wchar_p)
+        lib.TagsFromMusic.args = [c_char_p]
+        lib.TagsFromMusic.restype = POINTER(c_char_p)
 
         meta = lib.TagsFromMusic(self.uri)
         return MusicTags.get(meta)
 
     def tags_from_video(self) -> dict:
-        lib.TagsFromVideo.args = [c_wchar_p]
-        lib.TagsFromVideo.restype = POINTER(c_wchar_p)
+        lib.TagsFromVideo.args = [c_char_p]
+        lib.TagsFromVideo.restype = POINTER(c_char_p)
 
         meta = lib.TagsFromVideo(self.uri)
         return VideoTags.get(meta)

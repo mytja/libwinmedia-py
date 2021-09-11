@@ -3,7 +3,7 @@ from typing import Callable
 
 from . import Media, Player
 from .library import lib
-from ctypes import c_int32, POINTER, c_wchar_p, CFUNCTYPE
+from ctypes import c_int32, POINTER, CFUNCTYPE, c_char_p
 
 
 class NativeControlsStatus:
@@ -55,22 +55,22 @@ class NativeControls:
         lib.PlayerNativeControlsUpdate.argtypes = [
             c_int32,
             c_int32,
-            POINTER(c_wchar_p),
-            c_wchar_p,
+            POINTER(c_char_p),
+            c_char_p,
         ]
 
         meta = media.tags_from_music()
 
         metalist = [
-            meta["albumArtist"],
-            meta["title"],
-            "1",
-            meta["publisher"],
-            meta["title"],
-            str(meta["trackNumber"]),
+            meta["albumArtist"].encode("utf-8"),
+            meta["title"].encode("utf-8"),
+            "1".encode("utf-8"),
+            meta["publisher"].encode("utf-8"),
+            meta["title"].encode("utf-8"),
+            str(meta["trackNumber"]).encode("utf-8"),
         ]
 
-        metas = (c_wchar_p * len(metalist))(*metalist)
+        metas = (c_char_p * len(metalist))(*metalist)
 
         lib.PlayerNativeControlsUpdate(self.player.id, 1, metas, thumb)
 
