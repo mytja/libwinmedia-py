@@ -1,8 +1,16 @@
+import time
+
 import libwinmedia
 
-media = libwinmedia.Media("https://p.scdn.co/mp3-preview/669eef4c25c47eb54c8c0bceee55b94519f3b0c1?cid=774b29d4f13844c495f206cafdad9c86")
+print("New media")
+media = libwinmedia.Media("/home/mytja/Music/test.mp3")
+print("New player")
 player = libwinmedia.Player()
+print("Open")
 player.open(media)
+print("Play")
 player.play()
-while True:
-    pass
+print("Sleep")
+#while True:
+#    pass
+time.sleep(3)

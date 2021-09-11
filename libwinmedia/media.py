@@ -1,4 +1,5 @@
 import os
+import platform
 
 from .library import lib
 from ctypes import POINTER, c_wchar_p
@@ -26,7 +27,8 @@ class Media(object):
         if not os.path.isabs(uri) and not ("https" in uri or "http" in uri):
             uri = os.path.join(os.path.dirname(os.path.abspath(uri)), uri)
         self.uri = uri
-        lib.MediaCreate(self.id, uri, parse)
+        if platform.system() != "Linux":
+            lib.MediaCreate(self.id, uri, parse)
         media_id += 1
 
     def dispose(self) -> None:

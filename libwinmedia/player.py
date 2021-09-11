@@ -1,9 +1,11 @@
+import ctypes
+
 from .playlist import Playlist
 from .media import Media
 from .library import lib
 from typing import Callable, Union
 
-from ctypes import CFUNCTYPE, c_bool, c_int32, c_float, c_wchar_p
+from ctypes import CFUNCTYPE, c_bool, c_int32, c_float, c_wchar_p, c_char_p
 
 player_id = 0
 
@@ -12,7 +14,7 @@ class Player(object):
     """A class for controlling a media player."""
 
     def __init__(self, showVideo: bool = False):
-        """Create a new Player instance.
+        """Create a new [Player] instance.
 
         Args:
             showVideo (bool, optional): Whether to show the video window. Defaults to False.
@@ -27,10 +29,10 @@ class Player(object):
         self._callbacks = []
 
     def open(self, media: Union[Media, Playlist], autostart: bool = True) -> None:
-        """Provide a Media instance to the player.
+        """Provide a [Media] or [Playlist] instance to the [Player].
 
         Args:
-            media (Media or Playlist): A media file or a Playlist.
+            media ([Media] or [Playlist]): A media file or a Playlist.
             autostart (bool, optional): Whether to autostart playback of the provided media. Defaults to True.
         """
 
@@ -40,7 +42,10 @@ class Player(object):
         else:
             playlist = media
 
-        uris = (c_wchar_p * len(playlist.uris))(*playlist.uris)
+        urislist = []
+        for i in playlist.uris:
+            urislist.append(i.encode("utf-8"))
+        uris = (ctypes.c_char_p * len(playlist.uris))(*urislist)
         ids = (c_int32 * len(playlist.ids))(*playlist.ids)
 
         lib.PlayerOpen(self.id, len(playlist.medias), uris, ids)
