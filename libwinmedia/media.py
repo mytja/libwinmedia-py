@@ -28,7 +28,7 @@ class Media(object):
             uri = os.path.join(os.path.dirname(os.path.abspath(uri)), uri)
         self.uri = uri
         if platform.system() != "Linux":
-            lib.MediaCreate(self.id, uri, parse)
+            lib.MediaCreate(self.id, uri.encode("utf-8"), parse)
         media_id += 1
 
     def dispose(self) -> None:
@@ -45,21 +45,21 @@ class Media(object):
         lib.TagsFromMusic.args = [c_char_p]
         lib.TagsFromMusic.restype = POINTER(c_char_p)
 
-        meta = lib.TagsFromMusic(self.uri)
+        meta = lib.TagsFromMusic(self.uri.encode("utf-8"))
         return MusicTags.get(meta)
 
     def tags_from_video(self) -> dict:
         lib.TagsFromVideo.args = [c_char_p]
         lib.TagsFromVideo.restype = POINTER(c_char_p)
 
-        meta = lib.TagsFromVideo(self.uri)
+        meta = lib.TagsFromVideo(self.uri.encode("utf-8"))
         return VideoTags.get(meta)
 
     def extract_thumbnail(self, output_folder: str, output_file: str) -> None:
         """Extract the thumbnail and save it to a file.
 
         Args:
-            outputFolder (str): A folder for saving the thumbnail.
-            outputFile (str): A name of the thumbnail file.
+            output_folder (str): A folder for saving the thumbnail.
+            output_file (str): A name of the thumbnail file.
         """
-        lib.TagsExtractThumbnail(self.uri, "file://" + output_folder, output_file, 2, 400)
+        lib.TagsExtractThumbnail(self.uri.encode(), ("file://" + output_folder).encode(), output_file.encode(), 2, 400)
